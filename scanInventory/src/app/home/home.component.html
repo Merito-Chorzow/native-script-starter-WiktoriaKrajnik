@@ -1,17 +1,17 @@
-<ActionBar title="Product list">
-</ActionBar>
+<ActionBar title="Product list"></ActionBar>
 
 <StackLayout class="page">
-  <Label
-    text="Product list"
-    class="h1">
-  </Label>
-  <Button
-    text="Add product"
-    class="btn btn-primary"
-    (tap)="onAddProduct()">
-  </Button>
-  <StackLayout class="list-placeholder">
-    <Label text="No products available."></Label>
+  <Button text="Add product" class="btn btn-primary" (tap)="onAddProduct()"></Button>
+
+  <StackLayout class="listing">
+    <ListView [items]="products">
+      <ng-template let-product="item">
+        <StackLayout class="list-item">
+          <Label [text]="'Product name: ' + (product.name || '')" class="item-title"></Label>
+          <Label [text]="'Code: ' + (product.code || '')" class="item-subtitle"></Label>
+          <Label [text]="(product.available !== false) ? 'In stock' : 'Sold out'" class="item-availability"></Label>
+        </StackLayout>
+      </ng-template>
+    </ListView>
   </StackLayout>
 </StackLayout>

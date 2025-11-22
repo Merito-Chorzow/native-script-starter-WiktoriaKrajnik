@@ -39,4 +39,14 @@ export class ProductService {
     this.localProducts.push(newProduct);
     return of(newProduct);
   }
+
+    deleteProduct(id: number): Observable<any> {
+    const index = this.localProducts.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.localProducts.splice(index, 1);
+      return of({ success: true});
+    } else {
+      return of({ success: false });
+    }
+    }
 }

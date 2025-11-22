@@ -2,6 +2,7 @@ import { Component, OnInit, NO_ERRORS_SCHEMA} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NativeScriptCommonModule } from '@nativescript/angular';
 import { ProductService } from '../service/product.service';
+import { confirm } from '@nativescript/core/ui/dialogs';
 
 @Component({
   selector: 'ProductDetails',
@@ -50,5 +51,35 @@ export class ProductDetailsComponent implements OnInit {
         this.router.navigate(['/home'])
     }
     onEdit() {}
-    onDelete() {}
+    onDelete() {
+
+        confirm({
+            title: 'Confirm Delete',
+            message: 'Are you sure you want to delete this product?',
+            okButtonText: 'Yes',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result) {
+                this.productService.deleteProduct(this.product.id).subscribe({
+                    next: () => {
+                        alert({
+                            title: 'Success',
+                            message: 'Product deleted successfully.',
+                            okButtonText: 'OK',
+                        })
+                        this.router.navigate(['/home'])
+                    },
+                    error: (err) => {
+                        alert({ 
+                            title: 'Error',
+                            message: `Failed to delete product: ${err}`,
+                            okButtonText: 'OK',
+                        })
+                    }
+                })
+            }else {
+                console.log('Delete cancelled by user.')
+            }   
+        })       
+    }
 }

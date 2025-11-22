@@ -3,7 +3,7 @@ import { NativeScriptCommonModule, NativeScriptFormsModule } from '@nativescript
 import { Router } from '@angular/router'
 import { ImageAsset } from '@nativescript/core'
 import { alert } from '@nativescript/core/ui/dialogs'
-import { ProductService } from '../service/product.service'
+import { ProductService, AddProductResult } from '../service/product.service'
 import * as camera from '@nativescript/camera'
 
 @Component({
@@ -86,23 +86,26 @@ export class AddProductComponent implements OnInit {
   }
 
     this.productService.addProduct(newProduct).subscribe({
-      next: () => {
+      next: (result: AddProductResult) => {
         alert({
-          title: 'Succes',
-          message: `Product added successfully!`,
-          okButtonText: 'OK'
+          title: result.success ? 'Success' : 'Warning',
+          message: result.message,
+          okButtonText: 'OK',
         }).then(() => {
+          this.isSaving = false
+          // Po dodaniu (nawet jeśli API padło) wracamy do listy
           this.router.navigate(['/home'])
         })
       },
       error: (err) => {
+        console.error('onSave addProduct error:', err)
         alert({
           title: 'Error',
           message: `Failed to add product: ${err}`,
-          okButtonText: 'OK'
+          okButtonText: 'OK',
         })
         this.isSaving = false
-      }
+      },
     })
   }
 

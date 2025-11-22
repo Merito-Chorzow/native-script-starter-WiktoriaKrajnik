@@ -1,4 +1,5 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, map, tap, catchError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 export interface Product {
@@ -11,11 +12,20 @@ export interface Product {
   available?: boolean;
 }
 
+export interface AddProductResult {
+  success: boolean
+  message: string
+  product: Product
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  // Lokalna lista produktów - symulujemy prawdziwą bazę danych
   private localProducts: Product[] = [];
   private nextId = 1;
+
+  private readonly API_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
     return of([...this.localProducts]);
@@ -26,7 +36,7 @@ export class ProductService {
     return of(product);
   }
 
-  addProduct(product: any): Observable<Product> {
+  addProduct(product: any): Observable<AddProductResult> {
     const newProduct: Product = {
       id: this.nextId++,
       name: product.name,
@@ -37,7 +47,35 @@ export class ProductService {
       available: true,
     };
     this.localProducts.push(newProduct);
-    return of(newProduct);
+
+    const payload = {
+      title: newProduct.name,
+      body: newProduct.body,
+      userId: newProduct.userId
+    };
+
+    return this.http.post<any>(this.API_URL, payload).pipe(
+       tap(response => {
+        console.log('API addProduct response:', response)
+      }),
+      map(() => {
+        return {
+          success: true,
+          message: 'Added successfully',
+          product: newProduct,
+        } as AddProductResult
+      }),
+      catchError(err => {
+        console.error('API addProduct error:', err)
+        // W razie błędu API też zwracamy sukces lokalny, ale z innym komunikatem
+        return of({
+          success: false,
+          message: 'Added locally (API error)',
+          product: newProduct,
+        } as AddProductResult)
+      })
+    );
+
   }
 
   deleteProduct(id: number): Observable<any> {

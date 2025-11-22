@@ -1,0 +1,52 @@
+<ActionBar>
+  <NavigationButton text="Back" (tap)="onCancel()"></NavigationButton>
+  <Label text="Add Product"></Label>
+</ActionBar>
+
+<ScrollView>
+  <StackLayout class="page">
+    <StackLayout class="form">
+      <Label text="Product name:" class="form-label"></Label>
+      <TextField 
+        [(ngModel)]="productName"
+        hint="e.g. Milk 2L"
+        class="input">
+      </TextField>
+      <Label text="Product code:" class="form-label"></Label>
+      <TextField 
+        [(ngModel)]="productCode" 
+        hint="e.g. PROD-001"
+        class="input">
+      </TextField>
+      <Label text="Description:" class="form-label"></Label>
+      <TextView 
+        [(ngModel)]="productDescription" 
+        hint="Product Description..."
+        class="input"
+        height="100">
+      </TextView>
+      <Label text="Add Photo:" class="form-label"></Label>
+      <Button 
+        text="📷 Take photo" 
+        class="btn btn-primary"
+        (tap)="onTakePhoto()">
+      </Button>
+        <Image *ngIf="productImage" [src]="productImage" class="product-image"></Image>
+        <Label *ngIf="!productImage" text="Added" class="muted-text"></Label>
+      <StackLayout class="action-buttons">
+        <Button 
+          text="💾 Add Product" 
+          class="btn btn-primary"
+          [isEnabled]="!isSaving"
+          (tap)="onSave()">
+        </Button>
+        <Button 
+          text="Cancel" 
+          class="btn btn-secondary"
+          (tap)="onCancel()">
+        </Button>
+      </StackLayout>
+
+    </StackLayout>
+  </StackLayout>
+</ScrollView>

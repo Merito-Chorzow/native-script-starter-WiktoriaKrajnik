@@ -1,0 +1,17 @@
+<ActionBar title="Product list">
+</ActionBar>
+
+<StackLayout class="page">
+  <Label
+    text="Product list"
+    class="h1">
+  </Label>
+  <Button
+    text="Add product"
+    class="btn btn-primary"
+    (tap)="onAddProduct()">
+  </Button>
+  <StackLayout class="list-placeholder">
+    <Label text="No products available."></Label>
+  </StackLayout>
+</StackLayout>

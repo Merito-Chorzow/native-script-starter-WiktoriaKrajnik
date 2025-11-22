@@ -5,27 +5,70 @@
 
 <ScrollView>
     <StackLayout class="page">
-        <Image [src]="product?.image" class="product-image" width="120" height="120" stretch="aspectFill" *ngIf="product?.image"></Image>
-        <Label [text]="'Product name: ' + (product?.name || '')" class="product-name"></Label>
-        <Label [text]="'Code: ' + (product?.code || '')" class="product-code"></Label>
-        <Label [text]="'Description: ' + (product?.body || '')" class="product-description"></Label>
-        <Label [text]="(product?.available !== false) ? 'In stock' : 'Sold out'" class="product-availability"></Label>
-      <StackLayout class="action-buttons" marginTop="20">
-        <Button 
-            text="Back to List" 
-            class="btn btn-primary"
-            (tap)="onBack()">
-        </Button>
-        <Button 
-            text="Edit Product" 
-            class="btn btn-secondary"
-            (tap)="onEdit()">
-        </Button>
-        <Button 
-            text="Delete Product" 
-            class="btn btn-danger"
-            (tap)="onDelete()"> 
-        </Button>
-      </StackLayout>
+
+        <!-- WIDOK SZCZEGÓŁÓW -->
+        <StackLayout *ngIf="!isLoading && product && !isEditing" class="product-detail">
+            <Image 
+                [src]="product?.image" 
+                class="product-image" 
+                width="120" 
+                height="120" 
+                stretch="aspectFill" 
+                *ngIf="product?.image">
+            </Image>
+
+            <Label [text]="'Product name: ' + (product?.name || '')" class="product-name"></Label>
+            <Label [text]="'Code: ' + (product?.code || '')" class="product-code"></Label>
+            <Label [text]="'Description: ' + (product?.body || '')" class="product-description"></Label>
+            <Label [text]="(product?.available !== false) ? 'In stock' : 'Sold out'" class="product-availability"></Label>
+
+            <StackLayout class="action-buttons" marginTop="20">
+                <Button 
+                    text="Back to List" 
+                    class="btn btn-primary"
+                    (tap)="onBack()">
+                </Button>
+                <Button 
+                    text="Edit Product" 
+                    class="btn btn-secondary"
+                    (tap)="onEdit()">
+                </Button>
+                <Button 
+                    text="Delete Product" 
+                    class="btn btn-danger"
+                    (tap)="onDelete()"> 
+                </Button>
+            </StackLayout>
+        </StackLayout>
+
+        <!-- WIDOK EDYCJI -->
+        <StackLayout *ngIf="!isLoading && product && isEditing" class="product-edit" marginTop="20">
+            <Label text="Product name:"></Label>
+            <TextField [(ngModel)]="editName" hint="Name"></TextField>
+
+            <Label text="Product code:"></Label>
+            <TextField [(ngModel)]="editCode" hint="Code"></TextField>
+
+            <Label text="Description:"></Label>
+            <TextView [(ngModel)]="editBody" hint="Product Description"></TextView>
+
+            <Label text="Status:"></Label>
+            <Switch [(ngModel)]="editAvailable"></Switch>
+            <Label [text]="editAvailable ? 'In stock' : 'Sold out'"></Label>
+
+            <StackLayout class="action-buttons" marginTop="10">
+                <Button 
+                    text="Save changes" 
+                    class="btn btn-primary" 
+                    (tap)="onSaveEdit()">
+                </Button>
+                <Button 
+                    text="Cancel" 
+                    class="btn btn-secondary" 
+                    (tap)="onCancelEdit()">
+                </Button>
+            </StackLayout>
+        </StackLayout>
+
     </StackLayout>
 </ScrollView>

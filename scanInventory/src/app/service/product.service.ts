@@ -40,7 +40,7 @@ export class ProductService {
     return of(newProduct);
   }
 
-    deleteProduct(id: number): Observable<any> {
+  deleteProduct(id: number): Observable<any> {
     const index = this.localProducts.findIndex(p => p.id === id);
     if (index !== -1) {
       this.localProducts.splice(index, 1);
@@ -48,5 +48,16 @@ export class ProductService {
     } else {
       return of({ success: false });
     }
+  }
+
+  updateProduct(product: Product): Observable<Product> {
+    const index = this.localProducts.findIndex(p => p.id === product.id);
+    if (index > -1) {
+      this.localProducts[index] = product;
+      console.log('updateProduct - zaktualizowano produkt:', product);
+      return of(product);
     }
+    console.log('updateProduct - nie znaleziono produktu ID:', product.id);
+    return of(product);
+  }
 }

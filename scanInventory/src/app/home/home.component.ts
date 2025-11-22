@@ -40,4 +40,11 @@ export class HomeComponent implements OnInit {
     onAddProduct() {
         this.router.navigate(['/product-add'])
     }
+
+    onProductTap(event: any) {
+        console.log('Tapped product event:', event);
+        const productDetails = this.products[event.index];
+        console.log('Navigating to product ID:', productDetails.id);
+        this.router.navigate(['/product-details', productDetails.id]);
+    }
 }

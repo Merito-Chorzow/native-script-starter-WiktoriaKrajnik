@@ -21,6 +21,11 @@ export class ProductService {
     return of([...this.localProducts]);
   }
 
+  getProduct(id: number): Observable<Product> {
+    const product = this.localProducts.find(p => p.id === id);
+    return of(product);
+  }
+
   addProduct(product: any): Observable<Product> {
     const newProduct: Product = {
       id: this.nextId++,

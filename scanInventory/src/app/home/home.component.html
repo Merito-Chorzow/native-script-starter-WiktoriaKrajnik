@@ -1,17 +1,22 @@
 <ActionBar title="Product list"></ActionBar>
 
-<StackLayout class="page">
+<GridLayout rows="auto, *">
   <Button text="Add product" class="btn btn-primary" (tap)="onAddProduct()"></Button>
 
-  <StackLayout class="listing">
-    <ListView [items]="products">
+  <StackLayout row="1">
+    <ListView [items]="products" *ngIf="!isLoading" (itemTap)="onProductTap($event)">
       <ng-template let-product="item">
-        <StackLayout class="list-item">
-          <Label [text]="'Product name: ' + (product.name || '')" class="item-title"></Label>
-          <Label [text]="'Code: ' + (product.code || '')" class="item-subtitle"></Label>
-          <Label [text]="(product.available !== false) ? 'In stock' : 'Sold out'" class="item-availability"></Label>
-        </StackLayout>
+        <GridLayout class="list-item" columns="60, *">
+          <Image col="0" [src]="product.image" width="60" height="60" stretch="aspectFill"></Image>
+          <StackLayout col="1">
+            <Label [text]="'Product name: ' + (product.name || '')" class="product-name"></Label>
+            <Label [text]="'Code: ' + (product.code || '')" class="product-code"></Label>
+            <Label [text]="(product.available !== false) ? 'In stock' : 'Sold out'" class="product-availability"></Label>
+          </StackLayout>
+        </GridLayout>
       </ng-template>
     </ListView>
   </StackLayout>
-</StackLayout>
+</GridLayout>
+
+

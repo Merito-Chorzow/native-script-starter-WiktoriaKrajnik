@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, NO_ERRORS_SCHEMA } from "@angular/core";
 import { Router } from "@angular/router";
 import { NativeScriptCommonModule, NativeScriptFormsModule } from '@nativescript/angular';
 import { ProductService } from "../service/product.service";
@@ -8,6 +8,7 @@ import { ProductService } from "../service/product.service";
     standalone: true,
     templateUrl: "./home.component.html",
     imports: [NativeScriptCommonModule, NativeScriptFormsModule],
+    schemas: [NO_ERRORS_SCHEMA],
 })
 export class HomeComponent implements OnInit {
     products: any[] = [];
